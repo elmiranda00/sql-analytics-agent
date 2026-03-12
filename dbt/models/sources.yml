@@ -1,0 +1,70 @@
+version: 2
+
+sources:
+  - name: thelook_ecommerce
+    database: bigquery-public-data
+    schema: thelook_ecommerce
+    tables:
+      - name: orders
+        description: >
+          One row per order. Contains order-level metadata (status, timestamps, user).
+        columns:
+          - name: order_id
+            description: Unique order identifier
+          - name: user_id
+            description: Customer who placed the order
+          - name: status
+            description: "Order status: Complete, Returned, Cancelled, Processing, Shipped"
+          - name: created_at
+            description: Order creation timestamp
+          - name: returned_at
+            description: Return timestamp (null if not returned)
+          - name: num_of_item
+            description: Number of items in the order
+
+      - name: order_items
+        description: >
+          One row per order-item. Links orders to products with pricing info.
+        columns:
+          - name: id
+            description: Unique order-item identifier
+          - name: order_id
+            description: FK to orders
+          - name: user_id
+            description: FK to users
+          - name: product_id
+            description: FK to products
+          - name: status
+            description: Item-level status
+          - name: sale_price
+            description: Price the item sold for
+          - name: created_at
+            description: When the item was ordered
+
+      - name: users
+        description: Customer demographic data
+        columns:
+          - name: id
+            description: Unique user identifier
+          - name: first_name
+          - name: last_name
+          - name: email
+          - name: age
+          - name: gender
+          - name: country
+          - name: city
+          - name: created_at
+            description: Account creation date
+
+      - name: products
+        description: Product catalogue
+        columns:
+          - name: id
+            description: Unique product identifier
+          - name: name
+            description: Product name
+          - name: brand
+          - name: category
+          - name: department
+          - name: retail_price
+          - name: cost

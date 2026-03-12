@@ -1,0 +1,11 @@
+sql_llm:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: oauth           # uses `gcloud auth application-default login`
+      project: text-2-sql-490008
+      dataset: dbt_sql_llm    # dbt will create datasets like dbt_sql_llm_staging, dbt_sql_llm_marts
+      location: US
+      threads: 4
+      timeout_seconds: 300

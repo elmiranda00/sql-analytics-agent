@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+pydantic
+python-dotenv
+openai
+google-cloud-bigquery
+pandas
+pyarrow
+dbt-core
+dbt-bigquery
+streamlit
+plotly
+requests
