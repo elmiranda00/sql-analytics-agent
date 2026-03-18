@@ -1,7 +1,5 @@
-"""
-Streamlit frontend for the Text-to-SQL Agent.
-Calls the FastAPI backend at localhost:8000.
-"""
+# Streamlit frontend for the Text-to-SQL Agent, Calls the FastAPI backend at localhost:8000.
+
 import pandas as pd
 import plotly.express as px
 import requests
@@ -41,12 +39,8 @@ st.markdown("""
         margin: 0.5rem 0;
         border-left: 3px solid #4299e1;
     }
-    .chat-agent {
-        background: #f0fff4;
-        padding: 0.75rem 1rem;
-        border-radius: 12px 12px 12px 2px;
-        margin: 0.5rem 0;
-        border-left: 3px solid #48bb78;
+    .stTextInput input {
+        color: #000000 !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -161,7 +155,7 @@ st.markdown("# 🤖 Text-to-SQL Agent")
 st.markdown("Ask questions about your data in plain English.")
 
 # Example queries
-st.markdown("**Try asking:**")
+st.markdown("**Sample questions:**")
 examples = [
     "What are the top 10 products by total revenue?",
     "Show daily net revenue for the last 30 days",
@@ -175,16 +169,21 @@ for i, ex in enumerate(examples):
 
 st.markdown("---")
 
-# Chat history
-for msg in st.session_state.messages:
-    if msg["role"] == "user":
-        st.markdown(f'<div class="chat-user"><strong>You:</strong> {msg["content"]}</div>',
-                    unsafe_allow_html=True)
+
+def _auto_chart(df: pd.DataFrame):
+    if df.empty:
+        st.info("No data.")
+        return
+    numeric = df.select_dtypes(include="number").columns.tolist()
+    categorical = df.select_dtypes(exclude="number").columns.tolist()
+    if categorical and numeric:
+        fig = px.bar(df.head(30), x=categorical[0], y=numeric[0])
+        st.plotly_chart(fig, use_container_width=True)
+    elif len(numeric) >= 2:
+        fig = px.scatter(df, x=numeric[0], y=numeric[1])
+        st.plotly_chart(fig, use_container_width=True)
     else:
-        st.markdown(f'<div class="chat-agent"><strong>Agent:</strong> {msg["content"]}</div>',
-                    unsafe_allow_html=True)
-        if msg.get("result"):
-            _render_result(msg["result"])
+        st.info("Not enough data variety to auto-render a chart.")
 
 
 def _render_result(result: dict):
@@ -217,20 +216,14 @@ def _render_result(result: dict):
     st.caption(f"Rows returned: {result.get('row_count', 0)}")
 
 
-def _auto_chart(df: pd.DataFrame):
-    if df.empty:
-        st.info("No data.")
-        return
-    numeric = df.select_dtypes(include="number").columns.tolist()
-    categorical = df.select_dtypes(exclude="number").columns.tolist()
-    if categorical and numeric:
-        fig = px.bar(df.head(30), x=categorical[0], y=numeric[0])
-        st.plotly_chart(fig, use_container_width=True)
-    elif len(numeric) >= 2:
-        fig = px.scatter(df, x=numeric[0], y=numeric[1])
-        st.plotly_chart(fig, use_container_width=True)
+# Chat history
+for msg in st.session_state.messages:
+    if msg["role"] == "user":
+        st.markdown(f'<div class="chat-user"><strong>You:</strong> {msg["content"]}</div>',
+                    unsafe_allow_html=True)
     else:
-        st.info("Not enough data variety to auto-render a chart.")
+        if msg.get("result"):
+            _render_result(msg["result"])
 
 
 # Input

@@ -1,0 +1,73 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: One row per order, cleaned from the raw orders source
+    columns:
+      - name: order_id
+        description: Primary key
+        data_tests:
+          - unique
+          - not_null
+      - name: user_id
+        description: FK to stg_users
+        data_tests:
+          - not_null
+      - name: status
+        description: Lowercased order status
+        data_tests:
+          - accepted_values:
+              values: ['complete', 'cancelled', 'returned', 'processing', 'shipped']
+      - name: order_date
+        description: Date portion of ordered_at
+      - name: num_of_item
+        description: Number of items in the order
+
+  - name: stg_users
+    description: One row per user, cleaned from the raw users source
+    columns:
+      - name: user_id
+        description: Primary key
+        data_tests:
+          - unique
+          - not_null
+      - name: email
+        data_tests:
+          - not_null
+
+  - name: stg_order_items
+    description: One row per order item, enriched with product details
+    columns:
+      - name: order_item_id
+        description: Primary key
+        data_tests:
+          - unique
+          - not_null
+      - name: order_id
+        description: FK to stg_orders
+        data_tests:
+          - not_null
+
+  - name: stg_products
+    description: One row per product, cleaned from the raw products source
+    columns:
+      - name: product_id
+        description: Primary key
+        data_tests:
+          - unique
+          - not_null
+      - name: product_name
+        data_tests:
+          - not_null
+
+  - name: stg_distribution_centers
+    description: One row per distribution center
+    columns:
+      - name: distribution_center_id
+        description: Primary key
+        data_tests:
+          - unique
+          - not_null
+      - name: name
+        data_tests:
+          - not_null

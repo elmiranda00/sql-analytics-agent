@@ -63,9 +63,9 @@ def run_agent(user_prompt: str, schema_context: str = "", privacy_mode = True) -
 
     tool_registry = {"execute_query": execute_query}
 
-    api_key = os.environ["OPENAI_API_KEY"]
-    model_name = os.environ.get("OPENAI_MODEL", "gpt-4o")
-    base_url = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
+    api_key = os.environ["GROQ_API_KEY"]
+    model_name = os.environ["LLM_MODEL"]
+    base_url = os.environ["GROQ_BASE_URL"]
 
     context_block = f"\n\nSchema context:\n{schema_context}" if schema_context else ""
 

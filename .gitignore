@@ -1,17 +1,5 @@
-# Secrets
 .env
-
-# Python
 __pycache__/
-*.pyc
 .venv*/
-*.egg-info/
-
-# dbt
-dbt/target/
-dbt/dbt_packages/
-dbt/logs/
-
-# OS
-.DS_Store
-Thumbs.db
+target/
+dbt_packages/

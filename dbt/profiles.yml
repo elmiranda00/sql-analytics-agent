@@ -1,9 +1,11 @@
+# File to inform dbt how to connect to Big Query
+
 sql_llm:
   target: dev
   outputs:
     dev:
       type: bigquery
-      method: oauth           # uses `gcloud auth application-default login`
+      method: oauth           
       project: text-2-sql-490008
       dataset: dbt_sql_llm    # dbt will create datasets like dbt_sql_llm_staging, dbt_sql_llm_marts
       location: US

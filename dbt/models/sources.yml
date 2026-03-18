@@ -19,21 +19,27 @@ sources:
             description: Order creation timestamp
           - name: returned_at
             description: Return timestamp (null if not returned)
+          - name: shipped_at
+            description: Order shipping timestamp
+          - name: delivered_at
+            description: Order delivery timestamp
           - name: num_of_item
             description: Number of items in the order
 
       - name: order_items
         description: >
-          One row per order-item. Links orders to products with pricing info.
+          One row per order-item. Links orders to products with pricing information.
         columns:
           - name: id
             description: Unique order-item identifier
           - name: order_id
-            description: FK to orders
+            description: Foreign Key to orders
           - name: user_id
-            description: FK to users
+            description: Foreign Key to users
           - name: product_id
-            description: FK to products
+            description: Foreign Key to products
+          - name: inventory_item_id
+            description: Foreign Key to products
           - name: status
             description: Item-level status
           - name: sale_price
@@ -68,3 +74,13 @@ sources:
           - name: department
           - name: retail_price
           - name: cost
+
+      - name: distribution_centers
+        description: Physical warehouse locations that ship inventory
+        columns:
+          - name: id
+            description: Unique distribution center ID
+          - name: name
+            description: Center name/location label
+          - name: latitude
+          - name: longitude

@@ -58,7 +58,7 @@ pip install -r requirements.txt
 
 ### 2. Create and configure your `.env` file
 ```
-OPENAI_API_KEY=your_key_here
+GROQ_API_KEY=your_key_here
 BIGQUERY_PROJECT_ID=your-gcp-project-id
 BIGQUERY_LOCATION=US
 OPENAI_MODEL=gpt-4o
